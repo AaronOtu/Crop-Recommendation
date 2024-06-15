@@ -5,12 +5,12 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 from .models import User
 
 class RegistrationForm(FlaskForm):
-    first_name = StringField('First Name', validators=[DataRequired()])
-    last_name = StringField('Last Name', validators=[DataRequired()])
-    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+    first_name = StringField('First Name', validators=[DataRequired()], render_kw={"class": "form-input"})
+    last_name = StringField('Last Name', validators=[DataRequired()],render_kw={"class": "form-input"})
+    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)], render_kw={"class": "form-input"})
+    email = StringField('Email', validators=[DataRequired(), Email()],render_kw={"class": "form-input"})
+    password = PasswordField('Password', validators=[DataRequired()],render_kw={"class": "form-input"})
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')],render_kw={"class": "form-input"})
     submit = SubmitField('Sign Up')
 
     def validate_username(self, username):
@@ -27,7 +27,7 @@ class RegistrationForm(FlaskForm):
             raise ValidationError("last name can only contain letters. Please choose a different one.")        
     
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired()],render_kw={"class": "form-input"})
+    password = PasswordField('Password', validators=[DataRequired()],render_kw={"class": "form-input"})
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
