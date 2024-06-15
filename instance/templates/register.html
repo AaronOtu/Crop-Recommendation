@@ -28,7 +28,7 @@
           {{ form.hidden_tag() }}
           <div class="input_box">
             {{ form.first_name }}
-            <label for="form_first_name">First Name</label>
+            <label for="form_first_name" class="label">First Name</label>
             <i class="fa-regular fa-user"></i>
             {% if form.first_name.errors %}
             <ul>
@@ -40,7 +40,7 @@
           </div>
           <div class="input_box">
             {{ form.last_name }}
-            <label for="form_last_name">Last Name</label>
+            <label for="form_last_name" class="label">Last Name</label>
             <i class="fa-regular fa-user"></i>
             {% if form.last_name.errors %}
             <ul>
@@ -52,7 +52,7 @@
           </div>
           <div class="input_box">
             {{ form.username }}
-            <label for="form_username">Username</label>
+            <label for="form_username" class="label">Username</label>
             <i class="fa-regular fa-user"></i>
             {% if form.username.errors %}
             <ul>
@@ -64,7 +64,7 @@
           </div>
           <div class="input_box">
             {{ form.email }}
-            <label for="form_email">Email</label>
+            <label for="form_email" class="label">Email</label>
             <i class="fa-regular fa-envelope"></i>
             {% if form.email.errors %}
             <ul>
@@ -76,7 +76,7 @@
           </div>
           <div class="input_box">
             {{ form.password }}
-            <label for="form_password">Password</label>
+            <label for="form_password" class="label">Password</label>
             <i class="fa-solid fa-lock"></i>
             {% if form.password.errors %}
             <ul>
@@ -88,7 +88,7 @@
           </div>
           <div class="input_box">
             {{ form.confirm_password }}
-            <label for="form_confirm_password">Confirm Password</label>
+            <label for="form_confirm_password" class="label">Confirm Password</label>
             <i class="fa-solid fa-lock"></i>
             {% if form.confirm_password.errors %}
             <ul>
