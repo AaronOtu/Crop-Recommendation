@@ -2,12 +2,14 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request
 from .forms import LoginForm, RegistrationForm
 from .models import User
 from . import db, bcrypt
-from flask_login import login_user, login_required, logout_user
+from flask_login import login_user, login_required, logout_user, current_user
 import pickle
 import numpy as np
 import pandas as pd
 import sklearn
 import os
+from datetime import datetime
+
 
 main = Blueprint('main', __name__)
 
@@ -43,7 +45,14 @@ def login():
 @main.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    return render_template('dashboard.html')
+    current_time = datetime.now().time()
+    if current_time < datetime.strptime('12:00:00', '%H:%M:%S').time():
+        greeting = "Good morning"
+    elif current_time < datetime.strptime('18:00:00', '%H:%M:%S').time():
+        greeting = "Good afternoon"
+    else:
+        greeting = "Good evening"
+    return render_template('dashboard.html', first_name=current_user.first_name, greeting=greeting)
 
 
 @main.route("/predict", methods=['POST'])

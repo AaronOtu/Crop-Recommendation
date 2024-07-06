@@ -25,11 +25,25 @@
                     {{ form.username }}
                     <label for="form_username" class="label">Username</label>
                     <i class="fa-regular fa-user"></i>
+                    {% if form.username.errors %}
+                    <ul>
+                      {% for error in form.username.errors %}
+                      <li>{{ error }}</li>
+                      {% endfor %}
+                    </ul>
+                    {% endif %}
                 </div>
                 <div class="input_box">
                     {{ form.password }}
                     <label for="form_password" class="label">Password</label>
                     <i class="fa-solid fa-lock"></i>
+                    {% if form.password.errors %}
+                    <ul>
+                      {% for error in form.password.errors %}
+                      <li>{{ error }}</li>
+                      {% endfor %}
+                    </ul>
+                    {% endif %}
                 </div>
                 <div class="input_box">
                     {{ form.submit }}

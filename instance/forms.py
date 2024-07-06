@@ -31,3 +31,7 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()],render_kw={"class": "form-input"})
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
+   
+    def validate_username(self, username):
+        if username.data == "wrong_username":
+            raise ValidationError("The username is incorrect")
