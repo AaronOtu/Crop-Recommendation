@@ -1,135 +1,279 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Dashboard</title>
-		<link rel="stylesheet" href="{{ url_for('static', filename='dash.css') }}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='dash.css') }}"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+      crossorigin="anonymous"
+    />
+    <style>
+      h1 {
+        color: mediumseagreen;
+        text-align: center;
+      }
+
+      .warning {
+        color: red;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .main {
+        display: grid;
+        grid-template-areas:
+          "form weather"
+          "recommendation other";
+        gap: 20px;
+        margin: 3rem;
+        padding: 10px;
+        backdrop-filter: blur(5px);
+      }
+
+      .form-container {
+        grid-area: form;
+        background: rgba(237, 242, 247, 0.5);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 20px;
+				margin-right: 600px;
+      }
+
+      .weather-container {
+        grid-area: weather;
+        background: rgba(237, 242, 247, 0.5);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 20px;
+      }
+
+      /* .recommendation-container {
+        grid-area: recommendation;
+        background: rgba(237, 242, 247, 0.5);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 20px;
+      } */
+
+      .other-info-container {
+        grid-area: other;
+        background: rgba(237, 242, 247, 0.5);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 20px;
+      }
+			.card {
+        color: white;
+        background: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+        border-radius: 15px;
+        overflow: hidden;
+      }
+
+      .card-title,
+      .card-text {
+        background: rgba(0, 0, 0, 0.5); /* Semi-transparent background for text */
+        padding: 10px;
+        border-radius: 10px;
+      }
+
+      .text-success {
+        font-size: 20px;
+      }
+
+      .navbar {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+      }
+
+      .navbar-brand, .navbar-nav .nav-link {
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+        font-size: 1rem;
+      }
+    </style>
   </head>
-  <style>
-		h1 {
-			color: mediumseagreen;
-			text-align: center;
-		}
 
-		.navbar-text {
-			color: white;
-			font-size: 1.5em;
-	}
+  <body style="background: #bcbbb8">
+    <div>
+      <video autoplay loop muted plays-inline class="background-clip">
+        <source
+          src="{{url_for('static', filename='farm.mp4')}}"
+          type="video/mp4"
+        />
+      </video>
 
-	.nav-link {
-			color: white !important;
-			font-size: 1.5em;
-	}
-
-		.warning {
-			color: red;
-			font-weight: bold;
-			text-align: center;
-		}
-		.card{
-		margin-left:410px;
-		margin-top: 20px;
-		color: white;
-		}
-		.container{
-		background:#edf2f7;
-		font-weight: bold;
-		padding-bottom:10px;
-		border-radius: 15px;
-		}
-	</style>
-
-
-
-
-  <body style="background:#BCBBB8">
-  <!--=======================navbar=====================================================-->
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <span class="navbar-text">
-            {{greeting}}, {{ first_name }}
-        </span>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <!--=======================navbar=====================================================-->
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+          <span class="navbar-text"> {{greeting}}, {{ first_name }} </span>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
             <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+          </button>
+          <div
+            class="collapse navbar-collapse justify-content-end"
+            id="navbarSupportedContent"
+          >
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a>
-                </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('main.logout') }}"
+                  >Logout</a
+                >
+              </li>
             </ul>
-        </div>
-    </div>
-</nav>
-
-<!--==========================================================================================-->
-  <div class="container my-3 mt-3">
-      <h1 class="text-success">Crop Recommendation System <span class="text-success">🌱</span></h1>
-
-<!--      adding form-->
-      <form action="/predict" method="POST">
-          <div class="row">
-              <div class="col-md-4">
-					<label for="Nitrogen">Nitrogen</label>
-					<input type="number" id="Nitrogen" name="Nitrogen" placeholder="Enter Nitrogen" class="form-control" required step="0">
-				</div>
-               <div class="col-md-4">
-					<label for="Phosporus">Phosphorus</label>
-					<input type="number" id="Phosporus" name="Phosporus" placeholder="Enter Phosphorus" class="form-control" required step="00">
-				</div>
-				<div class="col-md-4">
-					<label for="Potassium">Potassium</label>
-					<input type="number" id="Potassium" name="Potassium" placeholder="Enter Potassium" class="form-control" required step="0">
-				</div>
           </div>
+        </div>
+      </nav>
 
-          <div class="row mt-4">
-				<div class="col-md-4">
-					<label for="Temperature">Temperature</label>
-					<input type="number" step="0.01" id="Temperature" name="Temperature" placeholder="Enter Temperature in °C" class="form-control" required step="0">
-				</div>
-				<div class="col-md-4">
-					<label for="Humidity">Humidity</label>
-					<input type="number" step="0.01" id="Humidity" name="Humidity" placeholder="Enter Humidity in %" class="form-control" required step="0">
-				</div>
-				<div class="col-md-4">
-					<label for="pH">pH</label>
-					<input type="number" step="0.01" id="Ph" name="Ph" placeholder="Enter pH value" class="form-control" required step="0">
-				</div>
-			</div>
+      <!--=======================main container==============================================-->
+      <div class="main">
+        <!-- Form Container -->
+        <div class="form-container">
+          <h1 class="text-success">
+            Crop Recommendation System <span class="text-success">🌱</span>
+          </h1>
+          <form action="/predict" method="POST">
+            <div class="mb-3">
+              <label for="Nitrogen" class="form-label">Nitrogen</label>
+              <input
+                type="number"
+                id="Nitrogen"
+                name="Nitrogen"
+                placeholder="Enter Nitrogen"
+                class="form-control"
+                required
+                step="0"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="Phosporus" class="form-label">Phosphorus</label>
+              <input
+                type="number"
+                id="Phosporus"
+                name="Phosporus"
+                placeholder="Enter Phosphorus"
+                class="form-control"
+                required
+                step="00"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="Potassium" class="form-label">Potassium</label>
+              <input
+                type="number"
+                id="Potassium"
+                name="Potassium"
+                placeholder="Enter Potassium"
+                class="form-control"
+                required
+                step="0"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="Temperature" class="form-label">Temperature</label>
+              <input
+                type="number"
+                step="0.01"
+                id="Temperature"
+                name="Temperature"
+                placeholder="Enter Temperature in °C"
+                class="form-control"
+                required
+                step="0"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="Humidity" class="form-label">Humidity</label>
+              <input
+                type="number"
+                step="0.01"
+                id="Humidity"
+                name="Humidity"
+                placeholder="Enter Humidity in %"
+                class="form-control"
+                required
+                step="0"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="pH" class="form-label">pH</label>
+              <input
+                type="number"
+                step="0.01"
+                id="Ph"
+                name="Ph"
+                placeholder="Enter pH value"
+                class="form-control"
+                required
+                step="0"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="Rainfall" class="form-label">Rainfall</label>
+              <input
+                type="number"
+                step="0.01"
+                id="Rainfall"
+                name="Rainfall"
+                placeholder="Enter Rainfall in mm"
+                class="form-control"
+                required
+              />
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary btn-lg">
+                Get Recommendation
+              </button>
+            </div>
+          </form>
+        </div>
 
-          <div class="row mt-4">
-				<div class="col-md-4">
-					<label for="Rainfall">Rainfall</label>
-					<input type="number" step="0.01" id="Rainfall" name="Rainfall" placeholder="Enter Rainfall in mm" class="form-control" required>
-				</div>
-			</div>
+        <!-- Weather Container -->
+        <div class="weather-container">
+          <!-- Weather app content goes here -->
+        </div>
 
+        <!-- Recommendation Container -->
+        <div class="recommendation-container">
+          {% if result %}
+          <div class="card bg-dark" style="width: 18rem">
+            <img
+              src="{{url_for('static', filename='img.jpg')}}"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <!-- <h5 class="card-title">Recommend Crop for cultivation is:</h5> -->
+              <p class="card-text">{{ result }}</p>
+            </div>
+          </div>
+          {% endif %}
+        </div>
 
-
-           <div class="row mt-4">
-
-           <div class="col-md-12 text-center">
-				<button type="submit" class="btn btn-primary btn-lg">Get Recommendation</button>
-			</div>
-			</div>
-      </form>
-
-
-
-       {% if result %}
-		<div class="card bg-dark" style="width: 18rem;">
-		  <img src="{{url_for('static', filename='img.jpg')}}" class="card-img-top" alt="...">
-		  <div class="card-body">
-			<h5 class="card-title">Recommend Crop for cultivation is:</h5>
-			<p class="card-text">{{ result }}</p>
-		  </div>
-		</div>
-	   {% endif %}
-  </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+        <!-- Other Info Container -->
+        <div class="other-info-container">
+          <!-- Other info content goes here -->
+        </div>
+      </div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

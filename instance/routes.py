@@ -25,6 +25,15 @@ model = pickle.load(open(model_path, 'rb'))
 sc = pickle.load(open(scaler_path, 'rb'))
 mx = pickle.load(open(minmaxscaler_path, 'rb'))
 
+def get_greeting():
+    current_time = datetime.now().time()
+    if current_time < datetime.strptime('12:00:00', '%H:%M:%S').time():
+        return "Good morning"
+    elif current_time < datetime.strptime('18:00:00', '%H:%M:%S').time():
+        return "Good afternoon"
+    else:
+        return "Good evening"
+
 
 @main.route('/')
 def home():
@@ -45,13 +54,7 @@ def login():
 @main.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    current_time = datetime.now().time()
-    if current_time < datetime.strptime('12:00:00', '%H:%M:%S').time():
-        greeting = "Good morning"
-    elif current_time < datetime.strptime('18:00:00', '%H:%M:%S').time():
-        greeting = "Good afternoon"
-    else:
-        greeting = "Good evening"
+    greeting = get_greeting()
     return render_template('dashboard.html', first_name=current_user.first_name, greeting=greeting)
 
 
@@ -82,7 +85,9 @@ def predict():
             result = "{} is the best crop to be cultivated right there".format(crop)
         else:
             result = "Sorry, we could not determine the best crop to be cultivated with the provided data."
-        return render_template('dashboard.html',result = result)
+            
+        greeting =get_greeting()    
+        return render_template('dashboard.html',result = result, first_name=current_user.first_name, greeting=greeting)
 
 
 @main.route('/logout', methods=['GET', 'POST'])
