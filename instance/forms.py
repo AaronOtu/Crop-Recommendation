@@ -32,6 +32,11 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
    
+    # def validate_username(self, username):
+    #     if username.data == "wrong_username":
+    #         raise ValidationError("The username is incorrect")
+        
     def validate_username(self, username):
-        if username.data == "wrong_username":
-            raise ValidationError("The username is incorrect")
+        self.existing_user = User.query.filter_by(username=username.data).first()
+        if not self.existing_user:
+            raise ValidationError("Incorrect username")    

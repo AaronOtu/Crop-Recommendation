@@ -115,3 +115,8 @@ def register():
         flash('Registration successful!', 'success')
         return redirect(url_for('main.login'))
     return render_template('register.html', form=form)
+
+
+@main.route('/crops', methods=['GET','POST'])
+def crops():
+    return render_template('crops.html')
