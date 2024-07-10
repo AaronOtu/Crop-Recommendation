@@ -28,11 +28,11 @@ mx = pickle.load(open(minmaxscaler_path, 'rb'))
 def get_greeting():
     current_time = datetime.now().time()
     if current_time < datetime.strptime('12:00:00', '%H:%M:%S').time():
-        return "Good morning"
+        return "Good Morning"
     elif current_time < datetime.strptime('18:00:00', '%H:%M:%S').time():
-        return "Good afternoon"
+        return "Good Afternoon"
     else:
-        return "Good evening"
+        return "Good Evening"
 
 
 @main.route('/')
@@ -119,4 +119,10 @@ def register():
 
 @main.route('/crops', methods=['GET','POST'])
 def crops():
-    return render_template('crops.html')
+    greeting = get_greeting()
+    return render_template('crops.html', first_name=current_user.first_name, greeting=greeting)
+
+@main.route('/about', methods=['GET','POST'])
+def about():
+    greeting = get_greeting()
+    return render_template('about.html', first_name=current_user.first_name, greeting=greeting)
