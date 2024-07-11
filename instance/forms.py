@@ -3,6 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from .models import User
+from werkzeug.security import check_password_hash
 
 class RegistrationForm(FlaskForm):
     first_name = StringField('First Name', validators=[DataRequired()], render_kw={"class": "form-input"})
@@ -39,4 +40,10 @@ class LoginForm(FlaskForm):
     def validate_username(self, username):
         self.existing_user = User.query.filter_by(username=username.data).first()
         if not self.existing_user:
-            raise ValidationError("Incorrect username")    
+            raise ValidationError("Incorrect username") 
+           
+    # def validate_password(self, password_hash):
+    #     if self.existing_user is None:
+    #         raise ValidationError("Incorrect username")  # Ensure username validation is called first
+    #     if not check_password_hash(self.existing_user.password_hash, password_hash.data):
+    #         raise ValidationError("Incorrect password")

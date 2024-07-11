@@ -14,7 +14,7 @@
       integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
       crossorigin="anonymous"
     />
-		<script src="{{ url_for('static', filename='weather.js') }}"></script>
+		<script src="{{ url_for('static', filename='weather.js') }}" defer></script>
     <style>
       h1 {
         color: mediumseagreen;
@@ -44,15 +44,16 @@
         backdrop-filter: blur(10px);
         border-radius: 15px;
         padding: 20px;
-				margin-right: 600px;
+				width: 500px;
       }
 
       .weather-container {
-        grid-area: weather;
+        width: 500px;
         background: rgba(237, 242, 247, 0.5);
         backdrop-filter: blur(10px);
         border-radius: 15px;
         padding: 20px;
+        height:350px
       }
 
       /* .recommendation-container {
@@ -63,13 +64,13 @@
         padding: 20px;
       } */
 
-      .other-info-container {
+      /*.other-info-container {
         grid-area: other;
         background: rgba(237, 242, 247, 0.5);
         backdrop-filter: blur(10px);
         border-radius: 15px;
         padding: 20px;
-      }
+      } */
 			.card {
         color: white;
         background: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
@@ -87,7 +88,7 @@
       .text-success {
         font-size: 20px;
       }
-
+      
     
     </style>
   </head>
@@ -260,7 +261,26 @@
 
         <!-- Weather Container -->
         <div class="weather-container">
-          <!-- Weather app content goes here -->
+          <div class = "top">
+            <p class ="location">Ghana-Kumasi</p>
+            <p class ="date"> Monday,12 Feb</p>
+          </div>
+          <div class = "middle">
+            <div class ="img-container">
+              <img src="" alt="" class ="weather-img" width="150px">
+            </div>
+            <div class = info-container>
+              <p class="temp">12 <sup>°C</sup>
+              </p>
+              <p class="weather-state">Rain shower</p>
+            </div>
+
+          </div>
+          <div class = "bottom">
+            <p >Wind <br> <span class="wind">45</span></p>
+            <p>Pressure <br> <span class="pressure">45</span></p>
+            <p>Humidity <br> <span class="humidity">45</span></p>
+          </div>
         </div>
 
         <!-- Recommendation Container -->
