@@ -38,7 +38,7 @@ async function success(position) {
   humidity.innerHTML = `${data.main.humidity}%`;
   weather_state.innerHTML = data.weather[0].description;
 
-  // Changes with the weather logi
+  // Changes with the weather logic
   switch (data.weather[0].main) {
     case "Rain":
       weather_image.src = 'static/images/rain.png';
