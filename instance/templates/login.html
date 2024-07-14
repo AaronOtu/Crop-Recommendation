@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Login</title>
@@ -8,17 +8,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
-
-  </head>
-  <body>
+</head>
+<body>
     <div class="wrapper">
-      <video autoplay loop muted plays-inline class="background-clip">
-        <source src="{{url_for('static', filename='farm.mp4')}}" type="video/mp4">
-      </video>
+        <video autoplay loop muted plays-inline class="background-clip">
+            <source src="{{ url_for('static', filename='farm.mp4') }}" type="video/mp4">
+        </video>
         <div class="login_box">
             <div class="login-header">
                 <span>Login</span>
             </div>
+            <!-- Flash messages -->
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="flash-message {{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
             <form method="POST" action="">
                 {{ form.hidden_tag() }}
                 <div class="input_box">
@@ -27,9 +38,9 @@
                     <i class="fa-regular fa-user"></i>
                     {% if form.username.errors %}
                     <ul>
-                      {% for error in form.username.errors %}
-                      <li>{{ error }}</li>
-                      {% endfor %}
+                        {% for error in form.username.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
                     </ul>
                     {% endif %}
                 </div>
@@ -39,9 +50,9 @@
                     <i class="fa-solid fa-lock"></i>
                     {% if form.password.errors %}
                     <ul>
-                      {% for error in form.password.errors %}
-                      <li>{{ error }}</li>
-                      {% endfor %}
+                        {% for error in form.password.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
                     </ul>
                     {% endif %}
                 </div>
@@ -51,8 +62,6 @@
             </form>
             <a href="{{ url_for('main.register') }}">Don't have an account? Sign Up</a>
         </div>
-        
     </div>
-   
-  </body>
+</body>
 </html>

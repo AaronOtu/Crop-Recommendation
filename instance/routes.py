@@ -43,12 +43,19 @@ def home():
 @main.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-    if form.validate_on_submit():
+    error = None
+    if request.method == 'POST':
         user = User.query.filter_by(username=form.username.data).first()
-        if user and bcrypt.check_password_hash(user.password_hash, form.password.data):
+        if user is None or not bcrypt.check_password_hash(user.password_hash, form.password.data):
+            error = 'Invalid credentials'
+            form.username.data = ''
+            form.password.data = ''
+            flash('Invalid credentials','error')
+        else:
             login_user(user)
             return redirect(url_for('main.dashboard'))
-    return render_template('login.html', form=form)
+    return render_template('login.html', form=form, error=error)
+
 
 
 @main.route('/dashboard', methods=['GET', 'POST'])
