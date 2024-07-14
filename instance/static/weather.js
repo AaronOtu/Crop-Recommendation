@@ -29,12 +29,13 @@ async function success(position) {
   const currentDate = formatDate(new Date());
   date.innerHTML = currentDate;
 
-  // Convert temperature from Kelvin to Celsius
-  temperature.innerHTML = Math.round(data.main.temp - 273.15);
+  // Convert temperature from Kelvin to Celsius and add unit
+  temperature.innerHTML = `${Math.round(data.main.temp - 273.15)}°C`;
 
-  wind.innerHTML = data.wind.speed;
-  pressure.innerHTML = data.main.pressure;
-  humidity.innerHTML = data.main.humidity;
+  // Add units to wind speed, pressure, and humidity
+  wind.innerHTML = `${data.wind.speed} m/s`;
+  pressure.innerHTML = `${data.main.pressure} hPa`;
+  humidity.innerHTML = `${data.main.humidity}%`;
   weather_state.innerHTML = data.weather[0].description;
 
   // Weather image
