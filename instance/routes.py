@@ -9,6 +9,11 @@ import pandas as pd
 import sklearn
 import os
 from datetime import datetime
+import pickle
+from sklearn.preprocessing import StandardScaler
+import joblib
+
+
 
 
 main = Blueprint('main', __name__)
@@ -16,14 +21,11 @@ main = Blueprint('main', __name__)
 # Get the directory where this script resides
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-# Adjust the path to the pickle files based on the directory of this script
-model_path = os.path.join(basedir, 'model.pkl')
-scaler_path = os.path.join(basedir, 'standscaler.pkl')
-minmaxscaler_path = os.path.join(basedir, 'minmaxscaler.pkl')
-
-model = pickle.load(open(model_path, 'rb'))
-sc = pickle.load(open(scaler_path, 'rb'))
-mx = pickle.load(open(minmaxscaler_path, 'rb'))
+# Load the model
+model = joblib.load( os.path.join(basedir, 'random_forest_model.pkl'))
+# Load the scaler
+scaler = joblib.load(os.path.join(basedir, 'scaler.pkl'))
+# minmaxscaler_path = os.path.join(basedir, 'minmaxscaler.pkl')
 
 def get_greeting():
     current_time = datetime.now().time()
@@ -75,21 +77,22 @@ def predict():
         ph = request.form['Ph']
         rainfall = request.form['Rainfall']
 
-        feature_list = [N, P, K, temp, humidity, ph, rainfall]
-        single_pred = np.array(feature_list).reshape(1, -1)
+        # Scale the input data
+        input_data = scaler.transform([[N,P , K, humidity, rainfall, ph, temp]])
+        prediction = model.predict(input_data)
+        # single_pred = np.array(feature_list).reshape(1, -1)
 
-        mx_features = mx.transform(single_pred)
-        sc_mx_features = sc.transform(mx_features)
-        prediction = model.predict(sc_mx_features)
+        # mx_features = mx.transform(single_pred)
+        # sc_mx_features = sc.transform(mx_features)
+        # prediction = model.predict(sc_mx_features)
 
-        crop_dict = {1: "Rice", 2: "Maize", 3: "Jute", 4: "Cotton", 5: "Coconut", 6: "Papaya", 7: "Orange",
-                    8: "Apple", 9: "Muskmelon", 10: "Watermelon", 11: "Grapes", 12: "Mango", 13: "Banana",
-                    14: "Pomegranate", 15: "Lentil", 16: "Blackgram", 17: "Mungbean", 18: "Mothbeans",
-                    19: "Pigeonpeas", 20: "Kidneybeans", 21: "Chickpea", 22: "Coffee"}
+        # crop_dict = {1: "Rice", 2: "Maize", 3: "Jute", 4: "Cotton", 5: "Coconut", 6: "Papaya", 7: "Orange",
+        #             8: "Apple", 9: "Muskmelon", 10: "Watermelon", 11: "Grapes", 12: "Mango", 13: "Banana",
+        #             14: "Pomegranate", 15: "Lentil", 16: "Blackgram", 17: "Mungbean", 18: "Mothbeans",
+        #             19: "Pigeonpeas", 20: "Kidneybeans", 21: "Chickpea", 22: "Coffee"}
 
-        if prediction[0] in crop_dict:
-            crop = crop_dict[prediction[0]]
-            result = "{} is the best crop to be cultivated right there".format(crop)
+        if prediction[0]:
+            result = "{} is the best crop to be cultivated right there".format(prediction[0])
         else:
             result = "Sorry, we could not determine the best crop to be cultivated with the provided data."
             
